@@ -1,0 +1,11 @@
+html
+  head
+    title= 'Container' + id
+  body
+    form
+      each field in fields
+        div
+          label= field.label
+          input(type= 'text', id= field.name)
+      div
+        input(type= 'submit', value= 'Submit')

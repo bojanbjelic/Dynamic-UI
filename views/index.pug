@@ -1,0 +1,17 @@
+html
+  head
+    title= title
+  body
+    h2= title
+    //- b Postback Url
+    //-   input(type='text')
+    //- b Fields
+    ol(class= 'fields')
+      li
+        input(type= 'text', class= 'field_name', placeholder= 'Field name')
+        input(type= 'text', class= 'field_label', placeholder= 'Field label')
+        button(id= 'remove') clear
+    div
+      button(id= 'generate') Generate Container
+    script(src= 'js/jquery.min.js')
+    script(src= 'js/main.js')
