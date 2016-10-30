@@ -1,11 +1,11 @@
 html
   head
-    title= 'Container' + id
+    title='Container' + id
   body
-    form
+    form(method='post' action='/data')
       each field in fields
         div
-          label= field.label
-          input(type= 'text', id= field.name)
+          label=field.label
+          input(type='text', name=field.name)
       div
-        input(type= 'submit', value= 'Submit')
+        input(type='submit', value='Submit')

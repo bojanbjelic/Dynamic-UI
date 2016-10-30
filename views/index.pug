@@ -1,17 +1,16 @@
 html
   head
-    title= title
+    link(href='css/normalize.css' rel='stylesheet')
+    link(href='css/main.css' rel='stylesheet')
+    title=title
   body
-    h2= title
-    //- b Postback Url
-    //-   input(type='text')
-    //- b Fields
-    ol(class= 'fields')
+    h2=title
+    ul(class='fields')
       li
-        input(type= 'text', class= 'field_name', placeholder= 'Field name')
-        input(type= 'text', class= 'field_label', placeholder= 'Field label')
-        button(id= 'remove') clear
+        input(type='text', class='field_name', placeholder='Field name')
+        input(type='text', class='field_label', placeholder='Field label')
+        button(class='remove') clear
     div
-      button(id= 'generate') Generate Container
-    script(src= 'js/jquery.min.js')
-    script(src= 'js/main.js')
+      button(id='generate') Generate Container
+    script(src='js/jquery.min.js')
+    script(src='js/main.js')
