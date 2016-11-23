@@ -2,12 +2,14 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var uuid = require('uuid');
+var moment = require('moment');
 
 app.set('views', './views');
 app.set('view engine', 'pug');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.locals.moment = moment;
 
 // Temporary storage in memory
 var _containers = [];
@@ -22,16 +24,22 @@ app.get('/', function (req, res) {
  * Metadata
  */
 app.get('/metadata', function(req, res){
-  res.render('metadata', { title: 'New Metadata'});
+  if (req.accepts('html'))
+     res.render('metadata', {metadata: _metadata});
+  else
+    res.send(_metadata);
+});
+
+app.get('/metadata/new', function(req, res){
+  var validations = ['Required', 'Numeric', 'AlphaNumeric']; // TODO: get this from validations api
+  res.render('new_metadata', { validations: validations});
 });
 
 app.post('/metadata', function(req, res){
-  var token = uuid.v4();
-  _metadata.push({
-    token: token,
-    data: req.body
-  });
-
+  var data = req.body;
+  data.id = uuid.v4();
+  data.createdAt = new Date();
+  _metadata.push(data);
   res.sendStatus(201);
 });
 
