@@ -4,7 +4,7 @@ html
   body
     form(method='post' action='/data')
       input(type='hidden', value=metadata.id, name='metadata_id')
-      each field in metadata.fields
+      each field in (metadata.fields||[])
         div
           label=field.label
           input(type='text', name=field.name)
