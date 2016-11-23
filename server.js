@@ -17,7 +17,7 @@ var _sensitiveData = [];
 var _metadata = [];
 
 app.get('/', function (req, res) {
-  res.render('index', { title: 'Dynamic Ui'});
+  res.render('index');
 });
 
 /*
@@ -43,6 +43,20 @@ app.post('/metadata', function(req, res){
   res.sendStatus(201);
 });
 
+/*
+ * Form
+ */
+app.get('/form/:id', function(req, res){
+  var found = _metadata.find(c => c.id == req.params.id);
+  if (found)
+    res.render('form', {metadata: found});
+  else
+    res.sendStatus(404);
+});
+
+/*
+ * Container
+ */
 app.post('/container', function(req, res){
   var containerId = uuid.v4();
   _containers.push({
@@ -53,16 +67,13 @@ app.post('/container', function(req, res){
   res.json({ containerId: containerId });
 });
 
-app.get('/container/:id', function(req, res){
-  var found = _containers.find(function(c){
-    return c.id == req.params.id;
-  });
-
-  if (found)
-    res.render('container', found);
-  else
-    res.sendStatus(404);
+app.get('/container/new', function(req, res){
+  res.render('new_container', { metadata: _metadata});
 });
+
+/*
+ * Data
+ */
 
 app.post('/data', function(req, res){
   var token = uuid.v4();

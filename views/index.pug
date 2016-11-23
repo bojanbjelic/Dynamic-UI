@@ -1,16 +1,12 @@
 html
   head
-    link(href='css/normalize.css' rel='stylesheet')
+    link(href='/css/normalize.css' rel='stylesheet')
+    link(href='/css/bootstrap.min.css' rel='stylesheet')
     link(href='css/main.css' rel='stylesheet')
-    title=title
+    title GP
   body
-    h2=title
-    ul(class='fields')
-      li
-        input(type='text', class='field_name', placeholder='Field name')
-        input(type='text', class='field_label', placeholder='Field label')
-        button(class='remove') clear
-    div
-      button(id='generate') Generate Container
-    script(src='js/jquery.min.js')
-    script(src='js/main.js')
+    div(class='container')
+      h1 GP
+      a(class='btn btn-default', href='/metadata') Metadata
+    
+    script(src='js/jquery.min.js')  

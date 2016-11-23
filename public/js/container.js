@@ -1,5 +1,11 @@
 jQuery(function($){
     
+    if ($('.metadata option').length > 0)
+        $('.preview').attr('src', '/form/' + $('.metadata option').val());
+    
+    
+    var _fields = [];    
+
     $('.fields').click(function(e){
         var target = $(e.target);
         if (!target.hasClass('btn'))

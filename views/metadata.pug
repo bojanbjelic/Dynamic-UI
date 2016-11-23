@@ -10,14 +10,17 @@ html
       a(href='/metadata/new') Create
       table(class='table table-condensed fields')
         tr
+          th 
           th Name
           th Created
           th Fields
-        each m in metadata
+        each m in metadata || []
           tr
+            td
+              a(href='/form/' + m.id) View
             td=m.name
             td=moment(m.createdAt).fromNow()
-            td=m.fields.map(f=>f.name).join(', ')
+            td=(m.fields || []).map(f=>f.name).join(', ')
 
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')

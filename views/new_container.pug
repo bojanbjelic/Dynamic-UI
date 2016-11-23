@@ -1,0 +1,33 @@
+html
+  head
+    link(href='/css/normalize.css' rel='stylesheet')
+    link(href='/css/bootstrap.min.css' rel='stylesheet')
+    link(href='/css/main.css' rel='stylesheet')
+    title New Container
+  body
+    div(class='container')
+      h1 New Container 
+      div(class='col-md-6')
+        div(class='form-group')
+          label Name*
+          input(class='form-control name', type='text', placeholder='Name')
+        div(class='form-group')
+          label Css Url
+          input(class='form-control css_path', type='text', placeholder='Css Url')
+        div(class='form-group')
+          label Metadata
+          select(class='form-control metadata',  placeholder='Select Metadata')
+            each m in metadata
+              option(value=m.id)=m.name
+      div(class='col-md-6')
+        div(class='form-group')
+          label Preview
+        iframe(class='preview')
+      
+      div(class='col-md-12')        
+        a(class='btn btn-default', href='/container') Cancel        
+        button(class='btn btn-primary create') Create
+
+    script(src='/js/jquery.min.js')
+    script(src='/js/bootstrap.min.js')
+    script(src='/js/container.js')
