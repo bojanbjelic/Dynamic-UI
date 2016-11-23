@@ -1,0 +1,39 @@
+html
+  head
+    link(href='css/normalize.css' rel='stylesheet')
+    link(href='css/bootstrap.min.css' rel='stylesheet')
+    link(href='css/main.css' rel='stylesheet')
+    title=title
+  body
+    h1=title
+    div(class='form-group')
+      label Name
+      input(class='form-control', type='text', placeholder='Name')
+    label Fields
+    table(class='table table-condensed fields')
+      tr
+        th Name
+        th Label
+        th Validations
+        th
+      tr
+        td
+          input(type='text', class='form-control field_name', placeholder='Field name')
+        td
+          input(type='text', class='form-control field_label', placeholder='Field label')
+        td
+          a(class='btn edit_validations') 
+            span(class='glyphicon glyphicon-edit edit', aria-hidden='true')
+        td
+          button(class='btn btn-primary add')
+            span(class='glyphicon glyphicon-ok', aria-hidden='true')
+          span &nbsp;
+          button(class='btn btn-default clear')
+            span(class='glyphicon glyphicon-remove', aria-hidden='true')
+    
+    div(class='text-center')
+      button(class='btn btn-primary text-center') Create Metadata
+
+    script(src='js/jquery.min.js')
+    script(src='js/bootstrap.min.js')
+    script(src='js/metadata.js')

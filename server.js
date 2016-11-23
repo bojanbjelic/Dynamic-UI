@@ -9,13 +9,31 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+// Temporary storage in memory
+var _containers = [];
+var _sensitiveData = [];
+var _metadata = [];
+
 app.get('/', function (req, res) {
   res.render('index', { title: 'Dynamic Ui'});
 });
 
-// Temporary storage in memory
-var _containers = [];
-var _sensitiveData = [];
+/*
+ * Metadata
+ */
+app.get('/metadata', function(req, res){
+  res.render('metadata', { title: 'New Metadata'});
+});
+
+app.post('/metadata', function(req, res){
+  var token = uuid.v4();
+  _metadata.push({
+    token: token,
+    data: req.body
+  });
+
+  res.sendStatus(201);
+});
 
 app.post('/container', function(req, res){
   var containerId = uuid.v4();
