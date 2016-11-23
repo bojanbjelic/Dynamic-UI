@@ -68,7 +68,7 @@ app.post('/container', function(req, res){
 });
 
 app.get('/container/new', function(req, res){
-  res.render('new_container', { metadata: _metadata});
+  res.render('new_container', { metadataList: _metadata});
 });
 
 /*

@@ -12,21 +12,31 @@ html
           label Name*
           input(class='form-control name', type='text', placeholder='Name')
         div(class='form-group')
+          label Success Callback*
+          input(class='form-control success_callback', type='text', placeholder='OnSuccess')
+        div(class='form-group')
+          label Success Callback*
+          input(class='form-control callback_fn', type='text', placeholder='OnSuccess')
+        div(class='form-group')
+          label Failure Callback
+          input(class='form-control failure_callback', type='text', placeholder='OnFailure')
+        div(class='form-group')
           label Css Url
-          input(class='form-control css_path', type='text', placeholder='Css Url')
+          input(class='form-control css_path', type='text', placeholder='Css Url')          
         div(class='form-group')
           label Metadata
           select(class='form-control metadata',  placeholder='Select Metadata')
             each m in metadata
               option(value=m.id)=m.name
-      div(class='col-md-6')
-        div(class='form-group')
-          label Preview
-        iframe(class='preview')
-      
-      div(class='col-md-12')        
         a(class='btn btn-default', href='/container') Cancel        
         button(class='btn btn-primary create') Create
+      div(class='col-md-6')
+        label Preview        
+        iframe(class='preview')
+        
+      
+      div(class='col-md-12')        
+        
 
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')
