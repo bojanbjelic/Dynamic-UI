@@ -1,9 +1,11 @@
 html
   head
-    title='Container' + id
+    title='Container'
+    link(href=cssUrl rel='stylesheet')
+    //- link(href='/css/form-inline.css' rel='stylesheet')
   body
-    form(method='post' action='/data')
-      input(type='hidden', value=metadata.id, name='metadata_id')
+    form(method='post' action=postUrl)
+      input(type='hidden', value=metadata._id, name='metadata_id')
       each field in (metadata.fields||[])
         div
           label=field.label

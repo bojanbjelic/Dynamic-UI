@@ -1,15 +1,20 @@
 jQuery(function($){
 
     if ($('.metadata option').length > 0)
-        $('.preview').attr('src', '/form/' + $('.metadata option').val());
+        updatePreview();
 
     $('.metadata').on('change', function(){
-        $('.preview').attr('src', '/form/' + $('.metadata option:selected').val());
+        updatePreview();
     });
+
+    $('.css_url').on('change', function(){
+        updatePreview();
+    })
 
     $('.create').on('click', function(){
         var data = {
             name: $('.name').val(),
+            postUrl: $('.post_url').val(),
             cssUrl: $('.css_url').val(),
             metadata: {
                 _id: $('.metadata option:selected').val(),
@@ -28,8 +33,10 @@ jQuery(function($){
         });
     });
 
-    function updatePreview(metadataId){
-        $('.preview').attr('src', '/form/' + metadataId);
+    function updatePreview(){
+        var metadataId = $('.metadata option:selected').val();
+        var cssUrl = encodeURIComponent($('.css_url').val()) || 'Sample.css';
+        $('.preview').attr('src', '/form/preview/' + metadataId + '/' + cssUrl);
     }
 
     window.OnSuccess = function(token){

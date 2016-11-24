@@ -72,9 +72,47 @@ app.post('/metadata', function(req, res){
 app.get('/form/:id', function(req, res){
   db.metadata.findOne({_id: req.params.id}, (error, found)=>{
     if (found)
-      res.render('form', {metadata: found});
+      res.render('form', {
+        metadata: found,
+        cssUrl: "/css/sample.css",
+        postUrl: '/data'
+      });
     else
-      res.sendStatus(404);
+      res.status(404).send(error);
+  });
+});
+
+app.get('/form/preview/:metadataId/:cssUrl', function(req, res){
+  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, metadata) => {
+    if (metadata){
+      res.render('form', {
+        metadata: metadata, 
+        cssUrl: req.params.cssUrl,
+        postUrl: "#"
+      });
+    } else {
+      res.status(404).send("Metadata not found: " + container.metadata._id);
+    }
+  });
+});
+
+app.get('/form/c/:id', function(req, res){
+  db.container.findOne({_id: req.params.id}, (containerError, container) => {
+    if (container){      
+      db.metadata.findOne({_id: container.metadata._id}, (metadataError, metadata) => {
+        if (metadata){
+          res.render('form', {
+            metadata: metadata, 
+            cssUrl: container.cssUrl,
+            postUrl: container.postUrl 
+          });
+        } else {
+          res.status(404).send("Metadata not found: " + container.metadata._id);
+        }
+      });
+    } else {
+      res.status(404).send("Container not found: " + req.params.id);
+    }
   });
 });
 

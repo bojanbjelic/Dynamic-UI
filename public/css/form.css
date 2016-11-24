@@ -1,0 +1,18 @@
+html{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+    color: #333;
+}
+
+label {
+    display: block;
+    font-weight: 700;    
+    margin-bottom: .2em;
+}
+
+input[type=text] {
+    padding: .5em;
+    width: 100%;
+    margin-bottom: .7em;
+}
+
