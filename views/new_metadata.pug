@@ -13,9 +13,8 @@ html
           label Name*
           input(class='form-control metadata_name', type='text', placeholder='Name')
       div(class='col-md-12')
-        div(class='panel panel-primary')
-          div(class='panel-heading') Fields
-          div(class='panel-Body') These fields will be rendered by the container.
+        label Fields*
+        div(class='panel panel-default')
           table(class='table table-condensed fields')
             tr
               th Name
@@ -37,7 +36,7 @@ html
                   span(class='glyphicon glyphicon-remove', aria-hidden='true')      
       
       div(class='col-md-12')        
-        a(class='btn btn-default', href='/metadata') Cancel        
+        a(class='btn btn-default', href='/metadata') Back        
         button(class='btn btn-primary create') Create
 
       //- Validation list popup

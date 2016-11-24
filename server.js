@@ -1,3 +1,4 @@
+var config = require('./config.js');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -12,6 +13,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.locals.moment = moment;
 
+console.log(config);
+
 var db = {};
 db.container = new datastore({
    filename: __dirname + '/db/container.db',
@@ -22,12 +25,8 @@ db.metadata = new datastore({
    autoload: true
 });
 
-console.log('db at ' + __dirname);
-
 // Temporary storage in memory
-var _containers = [];
 var _sensitiveData = [];
-var _metadata = [];
 
 app.get('/', function (req, res) {
   res.render('index');

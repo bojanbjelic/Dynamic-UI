@@ -17,7 +17,7 @@ html
         each m in metadata || []
           tr
             td
-              a(href='/form/' + m._id) View
+              a(href='/form/preview/' + m._id + '/%2Fcss%2Fform.css', target='_blank') View
             td=m.name
             td=moment(m.createdAt).fromNow()
             td=(m.fields || []).map(f=>f.name).join(', ')

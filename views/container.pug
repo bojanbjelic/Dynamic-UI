@@ -13,16 +13,42 @@ html
           th
           th Name
           th Created At
+          th Post Url
           th Css Url
           th Metadata
         each c in containers || []
           tr
             td
-              a(href='/form/c/' + c._id) View
+              a(href='#', class='preview', data-id=c._id) View
             td=c.name
             td=moment(c.createdAt).fromNow()
+            td=c.postUrl
             td=c.cssUrl
             td=c.metadata.name
 
+            
+      //- Validation list popup
+      div(class='modal fade container-preview',tabindex='-1',role='dialog')
+        div(class='modal-dialog', role='document')
+          div(class='modal-content')
+            div(class='modal-header')
+              button(type='button', class='close', data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true') &times;
+              h4(class='modal-title', id='myModalLabel') Container Preview
+            div(class='modal-body') 
+              div(class='form-group')
+                label Success Callback
+                input(type='text', class='form-control successCallback')
+              div(class='form-group')
+                label Failure Callback
+                input(type='text', class='form-control failureCallback')
+              div(class='form-group')
+                label Url
+                input(type='text', class='form-control url') 
+              iframe
+            div(class='modal-footer')
+              button(class='btn btn-default done') Done            
+
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')
+    script(src='/js/container-list.js')
