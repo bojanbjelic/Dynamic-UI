@@ -1,11 +1,28 @@
 html
   head
-    title='Container' + id
+    link(href='/css/normalize.css' rel='stylesheet')
+    link(href='/css/bootstrap.min.css' rel='stylesheet')
+    link(href='/css/main.css' rel='stylesheet')
+    title Containers
   body
-    form(method='post' action='/data')
-      each field in fields
-        div
-          label=field.label
-          input(type='text', name=field.name)
-      div
-        input(type='submit', value='Submit')
+    include navbar.pug
+    div(class='container-fluid')
+      h1 Containers
+      table(class='table table-condensed fields')
+        tr
+          th
+          th Name
+          th Created At
+          th Css Url
+          th Metadata
+        each c in containers || []
+          tr
+            td
+              a(href='/form/c/' + c._id) View
+            td=c.name
+            td=moment(c.createdAt).fromNow()
+            td=c.cssUrl
+            td=c.metadata.name
+
+    script(src='/js/jquery.min.js')
+    script(src='/js/bootstrap.min.js')

@@ -14,11 +14,11 @@ app.locals.moment = moment;
 
 var db = {};
 db.container = new datastore({
-   filename: __dirname + 'db/container.db',
+   filename: __dirname + '/db/container.db',
    autoload: true
 });
 db.metadata = new datastore({
-   filename: __dirname + 'db/metadata.db',
+   filename: __dirname + '/db/metadata.db',
    autoload: true
 });
 
@@ -56,17 +56,14 @@ app.get('/metadata/new', function(req, res){
 
 app.post('/metadata', function(req, res){
   var data = req.body;
-  // data.id = uuid.v4();
   data.createdAt = new Date();
 
-  db.metadata.insert(data, (error, newMetadata)=>{
+  db.metadata.insert(data, (error, newMetadata) => {
     if (!error)
       res.json(newMetadata);
     else
       res.status(500).send({error: error});
-  })
-  // _metadata.push(data);
-  // res.sendStatus(201);
+  });
 });
 
 /*
@@ -84,14 +81,29 @@ app.get('/form/:id', function(req, res){
 /*
  * Container
  */
-app.post('/container', function(req, res){
-  var containerId = uuid.v4();
-  _containers.push({
-    id: containerId,
-    fields: req.body.fields
-  });
+app.get('/container', function(req, res){
+    db.container.find({}, (error, containers)=>{
+      if (!error){
+        if (req.accepts('html'))
+          res.render('container', {containers: containers});
+        else
+          res.send(containers);
+      }else{
+        res.status(500).send({error: error});
+      }
+    });
+});
 
-  res.json({ containerId: containerId });
+app.post('/container', function(req, res){
+  var data = req.body;
+  data.createdAt = new Date();
+  
+  db.container.insert(data, (error, newContainer) => {
+    if (!error)
+      res.json(newContainer);
+    else
+      res.status(500).send({error: error});
+  });
 });
 
 app.get('/container/new', function(req, res){
@@ -125,6 +137,7 @@ app.get('/data/:token', function(req, res){
     res.sendStatus(404);
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+var port = 3000;
+app.listen(port, ()=>{  
+  console.log('Server listening on port ' + port);
 });

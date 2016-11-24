@@ -5,7 +5,8 @@ html
     link(href='/css/main.css' rel='stylesheet')
     title New Container
   body
-    div(class='container')
+    include navbar.pug
+    div(class='container-fluid')
       h1 New Container
       div(class='col-md-6')
         div(class='form-group')
@@ -13,7 +14,7 @@ html
           input(class='form-control name', type='text', placeholder='Name')
         div(class='form-group')
           label Css Url
-          input(class='form-control css_path', type='text', placeholder='Css Url')
+          input(class='form-control css_url', type='text', placeholder='Css Url')
         div(class='form-group')
           label Metadata
           select(class='form-control metadata',  placeholder='Select Metadata')

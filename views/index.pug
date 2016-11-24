@@ -5,8 +5,10 @@ html
     link(href='css/main.css' rel='stylesheet')
     title GP
   body
-    div(class='container')
+    include navbar.pug
+    div(class='container-fluid')
       h1 GP
-      a(class='btn btn-default', href='/metadata') Metadata
+      p POC on Generic Payment
     
-    script(src='js/jquery.min.js')  
+    script(src='js/jquery.min.js')
+    script(src='/js/bootstrap.min.js')

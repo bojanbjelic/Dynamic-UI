@@ -1,5 +1,3 @@
-
-
 jQuery(function($){
 
     if ($('.metadata option').length > 0)
@@ -9,14 +7,29 @@ jQuery(function($){
         $('.preview').attr('src', '/form/' + $('.metadata option:selected').val());
     });
 
-    function updatePreview(metadataId, successCallback, failureCallback){
-        if (!successCallback)
-            successCallback  = 'OnSuccess';
+    $('.create').on('click', function(){
+        var data = {
+            name: $('.name').val(),
+            cssUrl: $('.css_url').val(),
+            metadata: {
+                _id: $('.metadata option:selected').val(),
+                name: $('.metadata option:selected').text()
+            }
+        };
 
-        if (!failureCallback)
-            failureCallback = 'OnFailure';
+        $.ajax({
+            url: '/container',
+            type: 'post',
+            data: data
+        }).done(function(newContainer){
+            alert('Container ' + newContainer._id + ' created!');
+        }).fail(function(error){
+            alert('Container create error: ' + error);
+        });
+    });
 
-        $('.preview').attr('src', '/form/' + metadataId + '?successCallback=' + successCallback + '&failureCallback=' + failureCallback);
+    function updatePreview(metadataId){
+        $('.preview').attr('src', '/form/' + metadataId);
     }
 
     window.OnSuccess = function(token){
@@ -25,5 +38,5 @@ jQuery(function($){
 
     window.OnFailure = function(error){
         alert("Failure: " + error);
-    }; 
+    };
 });

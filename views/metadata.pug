@@ -5,9 +5,9 @@ html
     link(href='/css/main.css' rel='stylesheet')
     title=title
   body
-    div(class='container')
-      h1 Metadata
-      a(href='/metadata/new') Create
+    include navbar.pug
+    div(class='container-fluid')
+      h1 Metadata      
       table(class='table table-condensed fields')
         tr
           th
