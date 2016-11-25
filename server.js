@@ -81,7 +81,8 @@ app.get('/metadata/:metadataId', function(req, res){
 });
 
 /*
- * Data
+ * data
+ * 
  */
 
 app.post('/data', function(req, res){
