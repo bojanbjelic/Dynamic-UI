@@ -10,9 +10,9 @@ jQuery(function($){
             type: 'post',
             data: data
         }).done(function(data){
-            window.parent.postMessage(data, location.origin);
-        }).error(function(){
-
+            (window.parent || window).postMessage(data, "*");
+        }).fail(function(jqXHR, textStatus, errorThrown){
+            window.parent.postMessage(errorThrown, "*");
         });
     });
 });

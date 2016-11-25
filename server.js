@@ -4,7 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var uuid = require('uuid');
 var moment = require('moment');
-var datastore = require('nedb')
+var db = require('./datastore.js')
 
 app.set('views', './views');
 app.set('view engine', 'pug');
@@ -12,17 +12,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.locals.moment = moment;
-
-var db = {
-  metadata: new datastore({
-    filename: __dirname + '/db/metadata.db',
-    autoload: true
-  }),
-  data: new datastore({
-    filename: __dirname + '/db/data.db',
-    autoload: true
-  })
-};
 
 app.get('/', function (req, res) {
   res.render('index');
@@ -62,7 +51,7 @@ app.post('/metadata', function(req, res){
 });
 
 app.get('/metadata/:metadataId', function(req, res){
-  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, foundMetadata)=>{
+  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, foundMetadata) => {
     if (metadataError)
       return res.status(404).send(metadataError);
   
@@ -80,15 +69,24 @@ app.get('/metadata/:metadataId', function(req, res){
   });
 });
 
+app.get('/validation', (req, res) => {
+  m
+
+  if (req.accepts('html'))
+    res.render('validation-list')
+});
+
 /*
  * Data
  */
-
 app.post('/data', function(req, res){
   db.data.insert(req.body, (error, newData) => {
+    if (error)
+      return res.status(500).error;
 
+    res.json({ token: newData._id });
   })
-  res.json({ token: newData._id });
+  
 });
 
 app.get('/data/:token', function(req, res){
@@ -101,6 +99,6 @@ app.get('/data/:token', function(req, res){
 });
 
 var port = 3000;
-app.listen(port, ()=>{  
+app.listen(port, () => {  
   console.log('Server listening on port ' + port);
 });
