@@ -11,17 +11,40 @@ html
       table(class='table table-condensed fields')
         tr
           th
+          th Id
           th Name
           th Created
           th Fields
         each m in metadata || []
           tr
             td
-              a(href='/form/preview/' + m._id + '/%2Fcss%2Fform.css', target='_blank') View
+              button(class='btn btn-default preview', type='button', data-id=m._id)
+                span(class='glyphicon glyphicon-search', aria-hidden='true')
+            td=m._id
             td=m.name
             td=moment(m.createdAt).fromNow()
             td=(m.fields || []).map(f=>f.name).join(', ')
 
+    div(class='modal fade metadata-preview',tabindex='-1',role='dialog')
+      div(class='modal-dialog', role='document')
+        div(class='modal-content')
+          div(class='modal-header')
+            button(type='button', class='close', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') &times;
+            h4(class='modal-title', id='myModalLabel') Metadata Preview
+          div(class='modal-body') 
+            div(class='form-group')
+              div(class='input-group input-group-sm')
+                input(type='hidden', id='defaultCss', value=cssUrl)
+                input(type='text', id='url', class='form-control cssUrl', placeholder='Path to css file')
+                div(class='input-group-btn')
+                  button(type='button', class='btn btn-primary copy', aria-label='Copy', data-clipboard-target='#url')
+                    span(class='glyphicon glyphicon-copy', aria-hidden='true')                  
+            iframe
+          div(class='modal-footer')
+            button(class='btn btn-default done') Done            
+
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')
+    script(src='/js/clipboard.min.js')
     script(src='/js/metadata.js')

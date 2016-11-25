@@ -2,10 +2,13 @@ jQuery(function($){
     var popup = $('.container-preview');    
     
     $('.preview').on('click', function(){
-        var containerId = $(this).data('id');    
-        $('iframe', popup).attr('src', 'http://localhost:3000/form/c/' + containerId);
+        var containerId = $(this).data('id');
+        var url = 'http://localhost:3000/form/c/' + containerId;    
+        $('iframe', popup).attr('src', url);
+        $('.url', popup).val(url);
         popup.modal('show');
     });
 
-    $('.done', popup).on('click', ()=> popup.modal('hide'));
+    var clipboard = new Clipboard('.copy');
+    $('.done', popup).on('click', function(){ popup.modal('hide'); });
 });

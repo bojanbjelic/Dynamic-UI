@@ -1,4 +1,5 @@
 var config = {};
-config.capturingEndpoint = '/data';
+config.captureUrl = '/data';
+config.defaultCssUrl = '/css/form.css';
 
 module.exports = config;

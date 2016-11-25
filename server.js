@@ -13,8 +13,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.locals.moment = moment;
 
-console.log(config);
-
 var db = {};
 db.container = new datastore({
    filename: __dirname + '/db/container.db',
@@ -25,26 +23,29 @@ db.metadata = new datastore({
    autoload: true
 });
 
-// Temporary storage in memory
-var _sensitiveData = [];
+db.data = new datastore({
+   filename: __dirname + '/db/data.db',
+   autoload: true
+});
 
 app.get('/', function (req, res) {
   res.render('index');
 });
 
+
 /*
  * Metadata
  */
 app.get('/metadata', function(req, res){
-    db.metadata.find({}, (error, metadata)=>{
-      if (!error){
-        if (req.accepts('html'))
-          res.render('metadata', {metadata: metadata});
-        else
-          res.send(metadata);
-      }else{
-        res.status(500).send({error: error});
-      }
+    db.metadata.find({}, (error, metadata) => {
+      if (error)
+        return res.status(500).send({error: error});
+      console.log(config.defaultCssUrl);
+      if (req.accepts('html'))
+        res.render('metadata', { metadata: metadata, cssUrl: config.defaultCssUrl });
+      else
+        res.send(metadata);
+      
     });
 });
 
@@ -65,6 +66,25 @@ app.post('/metadata', function(req, res){
   });
 });
 
+app.get('/metadata/:metadataId', function(req, res){
+  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, foundMetadata)=>{
+    if (metadataError)
+      return res.status(404).send(metadataError);
+  
+    console.log(req.query);
+    if (req.accepts('html')){
+      var cssUrl = req.query.cssUrl || config.defaultCssUrl;
+      res.render('form', {
+        metadata: foundMetadata,
+        postUrl: config.captureUrl,
+        cssUrl: cssUrl
+      });
+    } else {
+      res.send(foundMetadata);
+    }
+  });
+});
+
 /*
  * Form
  */
@@ -74,7 +94,6 @@ app.get('/form/:id', function(req, res){
       res.render('form', {
         metadata: found,
         cssUrl: "/css/sample.css",
-        postUrl: '/data'
       });
     else
       res.status(404).send(error);
@@ -102,8 +121,7 @@ app.get('/form/c/:id', function(req, res){
         if (metadata){
           res.render('form', {
             metadata: metadata, 
-            cssUrl: container.cssUrl,
-            postUrl: container.postUrl 
+            cssUrl: container.cssUrl
           });
         } else {
           res.status(404).send("Metadata not found: " + container.metadata._id);
@@ -122,7 +140,7 @@ app.get('/container', function(req, res){
     db.container.find({}, (error, containers)=>{
       if (!error){
         if (req.accepts('html'))
-          res.render('container', {containers: containers});
+          res.render('container_list', {containers: containers});
         else
           res.send(containers);
       }else{
@@ -143,6 +161,25 @@ app.post('/container', function(req, res){
   });
 });
 
+app.get('/container/:containerId/:metadataId', function(req, res){
+  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, foundMetadata)=>{
+    if (metadataError)
+      return res.status(404).send(metadataError);
+
+    db.container.find({_id: req.params.containerId}, (containerError, foundContainer) =>{
+      if (containerError)
+        return res.status(404).send(containerError);
+      
+        res.render('container', {
+          metadata: foundMetadata,
+          postUrl: config.capturingEndpoint,
+          cssUrl: foundContainer.cssUrl
+        });
+
+    });
+  });
+});
+
 app.get('/container/new', function(req, res){
   db.metadata.find({}, (error, list)=>{
     res.render('new_container', { metadata: list});
@@ -154,24 +191,19 @@ app.get('/container/new', function(req, res){
  */
 
 app.post('/data', function(req, res){
-  var token = uuid.v4();
-  _sensitiveData.push({
-    token: token,
-    data: req.body
-  });
+  db.data.insert(req.body, (error, newData) => {
 
-  res.json({ token: token });
+  })
+  res.json({ token: newData._id });
 });
 
 app.get('/data/:token', function(req, res){
-  var found = _sensitiveData.find(function(d){
-    return d.token == req.params.token;
-  });
-
-  if (found)
+  db.data.findOne({ _id: req.params.token}, (error, found) => {
+    if (found)
     res.json(found);
   else
     res.sendStatus(404);
+  });
 });
 
 var port = 3000;

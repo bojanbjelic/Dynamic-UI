@@ -13,23 +13,19 @@ html
           label Name*
           input(class='form-control name', type='text', placeholder='Name')
         div(class='form-group')
-          label Post Url
-          input(class='form-control post_url', type='text', placeholder='/data')
-        div(class='form-group')
           label Css Url
-          input(class='form-control css_url', type='text', placeholder='Css Url')
+          input(class='form-control css_url', type='text', placeholder='Css Url')      
         div(class='form-group')
-          label Metadata
+          label Select Metadata to Preview
           select(class='form-control metadata',  placeholder='Select Metadata')
             each m in metadata
-              option(value=m._id)=m.name
-        a(class='btn btn-default', href='/container') Back
-        button(class='btn btn-primary create') Create
-      div(class='col-md-6')
+              option(value=m._id)=m.name        
         label Preview
         div
           iframe(class='preview')
-
+        a(class='btn btn-default', href='/container') Back
+        button(class='btn btn-primary create') Create
+        
 
       div(class='col-md-12')
 

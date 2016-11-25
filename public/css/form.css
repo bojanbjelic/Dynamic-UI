@@ -16,3 +16,13 @@ input[type=text] {
     margin-bottom: .7em;
 }
 
+input[type=submit]{
+    border: none;
+    padding: 1em;
+    cursor: pointer;
+    background-color: #eee;
+}
+
+input[type=submit]:hover{
+    background-color: #ccc;
+}

@@ -14,12 +14,7 @@ jQuery(function($){
     $('.create').on('click', function(){
         var data = {
             name: $('.name').val(),
-            postUrl: $('.post_url').val(),
-            cssUrl: $('.css_url').val(),
-            metadata: {
-                _id: $('.metadata option:selected').val(),
-                name: $('.metadata option:selected').text()
-            }
+            cssUrl: $('.css_url').val()
         };
 
         $.ajax({

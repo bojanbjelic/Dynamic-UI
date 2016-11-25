@@ -16,6 +16,8 @@
 }
 
 iframe{
+  margin: 0;
   border: solid 1px #ccc;
   min-height: 300px;
+  width: 100%;
 }
