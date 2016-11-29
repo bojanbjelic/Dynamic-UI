@@ -12,7 +12,7 @@ jQuery(function($){
         }).done(function(data){
             (window.parent || window).postMessage(data, "*");
         }).fail(function(jqXHR, textStatus, errorThrown){
-            window.parent.postMessage(errorThrown, "*");
+            (window.parent || window).postMessage(errorThrown, "*");
         });
     });
 });

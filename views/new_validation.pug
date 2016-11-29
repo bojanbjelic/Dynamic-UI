@@ -1,0 +1,32 @@
+html
+  head
+    link(href='/css/normalize.css' rel='stylesheet')
+    link(href='/css/bootstrap.min.css' rel='stylesheet')
+    link(href='/css/main.css' rel='stylesheet')
+    title New Validation 
+  body
+    include navbar.pug
+    div(class='container-fluid')
+      h1 New Validation
+      div(class='col-md-4')
+        div(class='form-group')
+          label Name*
+          input(class='form-control metadata_name', type='text', placeholder='Name')
+        div(class='checkbox')
+          label
+            input(class='client_side', type='checkbox') 
+            span Available In Client
+        div(class='form-group')
+          label Error Message*
+          input(class='form-control error_message', type='text', placeholder='Name')
+        div(class='form-group')
+          label Script Url*
+          input(class='form-control script_url', type='text', placeholder='Name')
+      
+      div(class='col-md-12')        
+        a(class='btn btn-default', href='/validation') Cancel        
+        button(class='btn btn-primary create') Create
+
+    script(src='/js/jquery.min.js')
+    script(src='/js/bootstrap.min.js')
+    script(src='/js/new-validation.js')

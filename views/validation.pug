@@ -1,0 +1,27 @@
+html
+  head
+    link(href='/css/normalize.css' rel='stylesheet')
+    link(href='/css/bootstrap.min.css' rel='stylesheet')
+    link(href='/css/main.css' rel='stylesheet')
+    title validations
+  body
+    include navbar.pug
+    div(class='container-fluid')
+      h1 Validation      
+      table(class='table table-condensed fields')
+        tr
+          th Name
+          th Created
+          th Available In Client
+          th Error Message
+          th Script Url
+        each v in validations || []
+          tr
+            td=v.name
+            td=moment(v.createdAt).fromNow()
+            td=v.availableInClient ? 'Yes' : 'No'
+            td=v.errorMessage
+            td=v.scriptUrl
+
+    script(src='/js/jquery.min.js')
+    script(src='/js/bootstrap.min.js')
