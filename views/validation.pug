@@ -10,6 +10,7 @@ html
       h1 Validation      
       table(class='table table-condensed fields')
         tr
+          th
           th Name
           th Created
           th Available In Client
@@ -17,6 +18,9 @@ html
           th Script Url
         each v in validations || []
           tr
+            td
+              button(class='btn btn-default delete', type='button', data-id=v._id)
+                  span(class='glyphicon glyphicon-trash', aria-hidden='true')
             td=v.name
             td=moment(v.createdAt).fromNow()
             td=v.availableInClient ? 'Yes' : 'No'
@@ -25,3 +29,4 @@ html
 
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')
+    script(src='/js/validation.js')

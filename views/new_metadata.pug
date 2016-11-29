@@ -7,33 +7,32 @@ html
   body
     include navbar.pug
     div(class='container-fluid')
-      h1 New Metadata 
+      h3 New Metadata 
       div(class='col-md-4')
         div(class='form-group')
           label Name*
           input(class='form-control metadata_name', type='text', placeholder='Name')
       div(class='col-md-12')
         label Fields*
-        div(class='panel panel-default')
-          table(class='table table-condensed fields')
-            tr
-              th Name
-              th Label
-              th Validations
-              th
-            tr
-              td
-                input(type='text', class='form-control field_name', placeholder='Field name')
-              td
-                input(type='text', class='form-control field_label', placeholder='Field label')
-              td
-                a(class='btn edit_validations validations') 
-                  span(class='glyphicon glyphicon-edit', aria-hidden='true')
-              td
-                button(class='btn btn-primary add')
-                  span(class='glyphicon glyphicon-ok', aria-hidden='true')
-                button(class='btn btn-default clear')
-                  span(class='glyphicon glyphicon-remove', aria-hidden='true')      
+        table(class='table table-condensed fields')
+          tr
+            th Name
+            th Label
+            th Validations
+            th
+          tr
+            td
+              input(type='text', class='form-control field_name', placeholder='Field name')
+            td
+              input(type='text', class='form-control field_label', placeholder='Field label')
+            td
+              a(class='btn edit_validations validations') 
+                span(class='glyphicon glyphicon-edit', aria-hidden='true')
+            td
+              button(class='btn btn-primary add')
+                span(class='glyphicon glyphicon-ok', aria-hidden='true')
+              button(class='btn btn-default clear')
+                span(class='glyphicon glyphicon-remove', aria-hidden='true')      
       
       div(class='col-md-12')        
         a(class='btn btn-default', href='/metadata') Back        
@@ -56,7 +55,7 @@ html
                     span(class='glyphicon glyphicon-ok')
             div(class='modal-footer')
               button(class='btn btn-primary done') Done
-              button(class='btn btn-default cancel') Back              
+              button(class='btn btn-default cancel') Cancel              
 
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')

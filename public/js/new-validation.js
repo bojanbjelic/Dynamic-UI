@@ -13,7 +13,7 @@ jQuery(function($){
             data: data
         }).done(function(){
             alert('Validation created');
-            fieldRows.remove().empty();
+            $('input:text').val('');
         }).fail(function(){
             alert('Validation was not created');
         });

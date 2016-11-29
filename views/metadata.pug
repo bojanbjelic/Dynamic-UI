@@ -7,7 +7,7 @@ html
   body
     include navbar.pug
     div(class='container-fluid')
-      h1 Metadata      
+      h3 Metadata
       table(class='table table-condensed fields')
         tr
           th
@@ -40,7 +40,7 @@ html
                 input(type='hidden', id='defaultCss', value=cssUrl)
                 input(type='text', id='url', class='form-control cssUrl', placeholder='Path to css file')
                 div(class='input-group-btn')
-                  button(type='button', class='btn btn-primary copy', aria-label='Copy', data-clipboard-target='#url' title="Copy URL to clipboard")
+                  button(type='button', class='btn btn-primary copy', aria-label='Copy', data-clipboard-target='#url' title='Copy URL to clipboard')
                     span(class='glyphicon glyphicon-copy', aria-hidden='true')
             label Preview                  
             iframe

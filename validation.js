@@ -42,6 +42,18 @@ router.post('/', (req, res)=>{
 });
 
 /**
+ * Delete
+ */
+router.delete('/:validationId', function(req, res){
+  db.validation.remove({_id: req.params.validationId}, (error, removed)=>{
+    if (error)
+      res.status(500).send(error);
+    else
+      res.sendStatus(204);
+  });
+});
+
+/**
  * Get One
  */
 router.get('/:validationId', (req, res) => {

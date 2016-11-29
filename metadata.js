@@ -42,6 +42,9 @@ router.post('/', function(req, res){
   });
 });
 
+/**
+ * Delete
+ */
 router.delete('/:metadataId', function(req, res){
   db.metadata.remove({_id: req.params.metadataId}, (error, removed)=>{
     if (error)

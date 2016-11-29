@@ -37,6 +37,7 @@ jQuery(function($){
         }).done(function(){
             alert('Metadata created');
             fieldRows.remove().empty();
+            $('input:text').val('');
         }).fail(function(){
             alert('Metadata was not created');
         });
