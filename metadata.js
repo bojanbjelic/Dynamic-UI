@@ -42,6 +42,15 @@ router.post('/', function(req, res){
   });
 });
 
+router.delete('/:metadataId', function(req, res){
+  db.metadata.remove({_id: req.params.metadataId}, (error, removed)=>{
+    if (error)
+      res.status(500).send(error);
+    else
+      res.sendStatus(204);
+  });
+});
+
 /*
  * Get One
  */

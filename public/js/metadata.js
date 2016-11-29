@@ -16,6 +16,21 @@ jQuery(function(js){
         $('.metadata-preview').modal('show');        
     });
 
+    $('.delete').click(function(){
+        if (!confirm("Are you sure?"))
+            return;
+
+        var self = $(this);
+        $.ajax({
+            url:'/metadata/' + self.data('id'),
+            type: 'delete'
+        }).done(function(){
+            self.parents('tr').remove();
+        }).fail(function(error){
+            alert('Delete failed. ' + error);
+        });
+    });
+
     $('.done').click(function(){
         $('.metadata-preview').modal('hide');
     });

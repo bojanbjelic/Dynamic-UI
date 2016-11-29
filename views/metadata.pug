@@ -20,13 +20,15 @@ html
             td
               button(class='btn btn-default preview', type='button', data-id=m._id)
                 span(class='glyphicon glyphicon-search', aria-hidden='true')
+              button(class='btn btn-default delete', type='button', data-id=m._id)
+                span(class='glyphicon glyphicon-trash', aria-hidden='true')
             td=m._id
             td=m.name
             td=moment(m.createdAt).fromNow()
             td=(m.fields || []).map(f=>f.name).join(', ')
 
     div(class='modal fade metadata-preview',tabindex='-1',role='dialog')
-      div(class='modal-dialog', role='document')
+      div(class='modal-dialog modal-lg', role='document')
         div(class='modal-content')
           div(class='modal-header')
             button(type='button', class='close', data-dismiss='modal', aria-label='Close')
@@ -39,7 +41,8 @@ html
                 input(type='text', id='url', class='form-control cssUrl', placeholder='Path to css file')
                 div(class='input-group-btn')
                   button(type='button', class='btn btn-primary copy', aria-label='Copy', data-clipboard-target='#url' title="Copy URL to clipboard")
-                    span(class='glyphicon glyphicon-copy', aria-hidden='true')                  
+                    span(class='glyphicon glyphicon-copy', aria-hidden='true')
+            label Preview                  
             iframe
           div(class='modal-footer')
             button(class='btn btn-default done') Done            
