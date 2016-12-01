@@ -61,10 +61,11 @@ jQuery(function($){
         $('.done', list).one('click', function(){
             var selected = []
             $('.selected', list).each(function(i, e){
-                selected.push($(e).data('id'));
+                var selectedRow = $(e);
+                selected.push({id: selectedRow.data('id'), name: selectedRow.data('name')});
             });
             row.data('validations', selected);
-            $('.validations', row).text(selected.join(', '));
+            $('.validations', row).text(selected.map(function(v){ return v.name; }).join(', '));
             list.modal('hide');
         });
 
@@ -83,7 +84,7 @@ jQuery(function($){
             '</tr>');
 
         if (field.validations.length > 0)
-            $('.validations', row).html(field.validations.join(', '));
+            $('.validations', row).html(field.validations.map(function(v){ return v.name; }).join(', '));
             
         row.data('validations', field.validations)
         row.data('name', field.name);

@@ -10,12 +10,11 @@ router.get('/', function(req, res){
     db.metadata.find({}, (error, metadata) => {
       if (error)
         return res.status(500).send({error: error});
-      console.log(config.defaultCssUrl);
+
       if (req.accepts('html'))
         res.render('metadata', { metadata: metadata, cssUrl: config.defaultCssUrl });
       else
-        res.send(metadata);
-      
+        res.send(metadata);      
     });
 });
 
@@ -23,8 +22,14 @@ router.get('/', function(req, res){
  * Create Form
  */
 router.get('/new', function(req, res){
-  var validations = ['Required', 'Numeric', 'AlphaNumeric']; // TODO: get this from validations api
-  res.render('new_metadata', { validations: validations});
+
+  db.validation.find({}, (error, validations) => {
+    if (error){
+      res.status(500).send(error);
+    }
+
+    res.render('new_metadata', { validations: validations});
+  });
 });
 
 /*
@@ -61,12 +66,16 @@ router.get('/:metadataId', function(req, res){
   db.metadata.findOne({_id: req.params.metadataId}, (metadataError, foundMetadata) => {
     if (metadataError)
       return res.status(404).send(metadataError);
-  
+      
+    var captureUrl = config.captureUrl; 
+    if (req.query.preview == 'yes')
+      captureUrl = '#';
+
     if (req.accepts('html')){
       var cssUrl = req.query.cssUrl || config.defaultCssUrl;
       res.render('form', {
         metadata: foundMetadata,
-        postUrl: config.captureUrl,
+        postUrl: captureUrl,
         cssUrl: cssUrl
       });
     } else {

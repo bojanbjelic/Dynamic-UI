@@ -4,7 +4,7 @@ jQuery(function(js){
     clipboard.on('error', function(e) { console.log(e); });
 
     function updatePreview(){
-        $('iframe').attr('src', $('#url').val());
+        $('iframe').attr('src', $('#url').val() + '&preview=yes');
     }
 
     $('.preview').click(function(){

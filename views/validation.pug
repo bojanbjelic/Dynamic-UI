@@ -13,19 +13,17 @@ html
           th
           th Name
           th Created
-          th Available In Client
           th Error Message
-          th Script Url
+          th Module Name
         each v in validations || []
           tr
             td
               button(class='btn btn-default delete', type='button', data-id=v._id)
                   span(class='glyphicon glyphicon-trash', aria-hidden='true')
             td=v.name
-            td=moment(v.createdAt).fromNow()
-            td=v.availableInClient ? 'Yes' : 'No'
+            td=moment(v.createdAt).fromNow()            
             td=v.errorMessage
-            td=v.scriptUrl
+            td=v.moduleName
 
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')

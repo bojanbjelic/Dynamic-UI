@@ -50,8 +50,8 @@ html
               p Select validations to apply to&nbsp
                 b(class='fieldName')            
               div(class='list-group')
-                each val in validations
-                  a(class='list-group-item', data-id=val)=val
+                each v in validations
+                  a(class='list-group-item', data-id=v._id, data-name=v.name)=v.name
                     span(class='glyphicon glyphicon-ok')
             div(class='modal-footer')
               button(class='btn btn-primary done') Done

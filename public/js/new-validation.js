@@ -2,8 +2,7 @@ jQuery(function($){
     $('.create').click(function(){
         var data = {
             name : $('.metadata_name').val(),
-            availableInClient: $('.client_side').is(':checked'),
-            scriptUrl: $('.script_url').val(),
+            moduleName: $('.module_name').val(),
             errorMessage: $('.error_message').val()
         };
 
