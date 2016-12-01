@@ -6,7 +6,8 @@ function loadValidationList(callback){
   db.validation.find({}, (validationError, list) => {
     var loaded = {};
     list.forEach((v) => {
-      loaded[v.name] = require(v.moduleName);
+      loaded[v.name] = v;
+      loaded[v.name].validate = require(v.moduleName).validate;
     });
 
     callback(loaded);
@@ -17,38 +18,50 @@ function loadValidationList(callback){
  * Insert
  */
 router.post('/', (req, res) => {
-
   var data  = req.body;
-
   loadValidationList((validations) => {
-    db.metadata.find({_id: data.metadata_id}, (metadataError, foundMetadata) => {
+    db.metadata.findOne({_id: data.metadata_id}, (metadataError, foundMetadata) => {
       if (metadataError)
-        return res.status(500).send(metadataError); 
+        return res.status(404).send(metadataError);
 
-      
-      for(var i = 0; i < foundMetadata.fields; i++){
-        data[fo]
+      var result = { success: true };
+      var error = false;
+      var ok = foundMetadata.fields.every((f) => {
+        return f.validations.every((v) => {
+          var validator = validations[v.name]
+          if (validator.validate(data[f.name]))
+            return true;
+
+          error = {
+            field: { name: f.name },
+            errorMessage: validator.errorMessage
+          };
+
+          return false;
+        });
+      });
+
+      if (!ok)
+      {
+        return res.status(400).send({
+          success: false,
+          error: error
+        });
       }
 
+      db.data.insert(req.body, (insertError, newData) => {
+        if (insertError)
+          return res.status(500).send(insertError);
+
+        res.json({ success: true, token: newData._id });
+      });
 
     });
   });
 
-  db.metadata.find({_id: req.body.metadata_id}, (metadataError, foundMetadata) => {
-    if (metadataError)
-      return res.status(500).send(metadataError);
 
-    var validations = foundMetadata.fields.reduce((validationList, metadata)  => {
-      metadata.forEac()
-    }, []);
-  });
 
-  db.data.insert(req.body, (error, newData) => {
-    if (error)
-      return res.status(500).error;
 
-    res.json({ token: newData._id });
-  });
 });
 
 /**
