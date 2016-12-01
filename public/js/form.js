@@ -12,8 +12,6 @@ jQuery(function($){
         }).done(function(data){
             (window.parent || window).postMessage(data, "*");
         }).fail(function(jqXHR, textStatus, errorThrown){
-            console.log(jqXHR);
-            console.log(textStatus);
             (window.parent || window).postMessage(jqXHR.responseJSON, "*");
         });
     });
