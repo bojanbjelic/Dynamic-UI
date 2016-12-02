@@ -33,6 +33,12 @@ router.post('/', (req, res)=>{
  var data = req.body;
   data.createdAt = new Date();
 
+  try {
+    require(data.module);
+  } catch (error) {
+    return res.status(400).send('Module ' + data.module + ' not found.');
+  }
+
   db.validation.insert(data, (error, newValidation) => {
     if (!error)
       res.json(newValidation);

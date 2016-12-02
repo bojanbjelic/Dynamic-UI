@@ -6,7 +6,7 @@ function loadValidationList(callback){
   db.validation.find({}, (validationError, list) => {
     var loaded = {};
     list.forEach((v) => {
-      loaded[v.name] = require(v.moduleName);
+      loaded[v.name] = require(v.module);
     });
 
     callback(loaded);
