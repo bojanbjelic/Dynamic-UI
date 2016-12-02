@@ -1,5 +1,4 @@
 module.exports = {
-    validate: function(input){
-        return /^.{16,19}$/.test(input);
-    }
+    validate: (input) => /^.{16,19}$/.test(input),
+    getError: ()=> "Input lengt must be between 16 to 19"
 }

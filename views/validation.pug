@@ -13,7 +13,6 @@ html
           th
           th Name
           th Created
-          th Error Message
           th Module Name
         each v in validations || []
           tr
@@ -22,7 +21,6 @@ html
                   span(class='glyphicon glyphicon-trash', aria-hidden='true')
             td=v.name
             td=moment(v.createdAt).fromNow()            
-            td=v.errorMessage
             td=v.moduleName
 
     script(src='/js/jquery.min.js')

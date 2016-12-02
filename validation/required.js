@@ -1,5 +1,4 @@
 module.exports = {
-    validate: function(input){
-        return input && input.trim() != '';
-    }
+    validate: (input) => input && input.trim() != '',
+    getError: () => 'This field is required'
 }

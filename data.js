@@ -6,8 +6,7 @@ function loadValidationList(callback){
   db.validation.find({}, (validationError, list) => {
     var loaded = {};
     list.forEach((v) => {
-      loaded[v.name] = v;
-      loaded[v.name].validate = require(v.moduleName).validate;
+      loaded[v.name] = require(v.moduleName);
     });
 
     callback(loaded);
@@ -34,7 +33,7 @@ router.post('/', (req, res) => {
 
           error = {
             field: { name: f.name },
-            errorMessage: validator.errorMessage
+            errorMessage: validator.getError()
           };
 
           return false;

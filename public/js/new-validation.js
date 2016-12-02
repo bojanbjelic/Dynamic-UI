@@ -2,8 +2,7 @@ jQuery(function($){
     $('.create').click(function(){
         var data = {
             name : $('.metadata_name').val(),
-            moduleName: $('.module_name').val(),
-            errorMessage: $('.error_message').val()
+            moduleName: $('.module_name').val()
         };
 
         $.ajax({

@@ -1,5 +1,4 @@
 module.exports = {
-    validate: function(input){
-        return /^\d+$/.test(input);
-    }
+    validate: (input) => /^\d+$/.test(input),
+    getError: () => 'Input must be a number'
 }
