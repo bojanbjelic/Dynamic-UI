@@ -18,11 +18,11 @@ html
           tr
             td
               button(class='btn btn-default delete', type='button', data-id=v._id)
-                  span(class='glyphicon glyphicon-trash', aria-hidden='true')
+                span(class='glyphicon glyphicon-trash', aria-hidden='true')
             td=v.name
             td=moment(v.createdAt).fromNow()            
             td=v.module
-
+            
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')
     script(src='/js/validation.js')

@@ -10,9 +10,18 @@ jQuery(function($){
             type: 'post',
             data: data
         }).done(function(data){
+            $('input:text').val('');
             (window.parent || window).postMessage(data, "*");
         }).fail(function(jqXHR, textStatus, errorThrown){
             (window.parent || window).postMessage(jqXHR.responseJSON, "*");
         });
     });
+
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    var eventer = window[eventMethod];
+    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+    eventer(messageEvent,function(e) {
+        if (e.data == 'submit')
+            $('form').submit();
+    }, false);
 });

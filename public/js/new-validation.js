@@ -12,8 +12,8 @@ jQuery(function($){
         }).done(function(){
             alert('Validation created');
             $('input:text').val('');
-        }).fail(function(){
-            alert('Validation was not created');
+        }).fail(function(jqXHR, textStatus, errorThrown){
+            alert('Validation was not created. ' + jqXHR.responseText);
         });
     });
 });
