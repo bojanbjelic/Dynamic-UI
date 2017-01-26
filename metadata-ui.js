@@ -7,12 +7,12 @@ var config = require('./config.js');
  * Get All
  */
 router.get('/', function(req, res){
-    db.metadata.find({}, (error, metadata) => {
+    db.metadataUI.find({}, (error, metadata) => {
       if (error)
         return res.status(500).send({error: error});
-      console.log(metadata);
+
       if (req.accepts('html'))
-        res.render('metadata', { metadata: metadata, cssUrl: config.defaultCssUrl });
+        res.render('metadata-ui', { metadata: metadata, cssUrl: config.defaultCssUrl });
       else
         res.send(metadata);      
     });
@@ -23,12 +23,12 @@ router.get('/', function(req, res){
  */
 router.get('/new', function(req, res){
 
-  db.metadata.find({}, (error, validations) => {
+  db.validation.find({}, (error, validations) => {
     if (error){
       res.status(500).send(error);
     }
 
-    res.render('new_metadata', { validations: validations});
+    res.render('new_metadata-ui', { validations: validations});
   });
 });
 
@@ -39,7 +39,7 @@ router.post('/', function(req, res){
   var data = req.body;
   data.createdAt = new Date();
 
-  db.metadata.insert(data, (error, newMetadata) => {
+  db.metadataUI.insert(data, (error, newMetadata) => {
     if (!error)
       res.json(newMetadata);
     else
@@ -51,7 +51,7 @@ router.post('/', function(req, res){
  * Delete
  */
 router.delete('/:metadataId', function(req, res){
-  db.metadata.remove({_id: req.params.metadataId}, (error, removed)=>{
+  db.metadataUI.remove({_id: req.params.metadataId}, (error, removed)=>{
     if (error)
       res.status(500).send(error);
     else
@@ -63,7 +63,7 @@ router.delete('/:metadataId', function(req, res){
  * Get One
  */
 router.get('/:metadataId', function(req, res){
-  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, foundMetadata) => {
+  db.metadataUI.findOne({_id: req.params.metadataId}, (metadataError, foundMetadata) => {
     if (metadataError)
       return res.status(404).send(metadataError);
       
@@ -71,7 +71,16 @@ router.get('/:metadataId', function(req, res){
     if (req.query.preview == 'yes')
       captureUrl = '#';
 
+    if (req.accepts('html')){
+      var cssUrl = req.query.cssUrl || config.defaultCssUrl;
+      res.render('form', {
+        metadata: foundMetadata,
+        postUrl: captureUrl,
+        cssUrl: cssUrl
+      });
+    } else {
       res.send(foundMetadata);
+    }
   });
 });
 

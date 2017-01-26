@@ -3,17 +3,18 @@ html
     link(href='/css/normalize.css' rel='stylesheet')
     link(href='/css/bootstrap.min.css' rel='stylesheet')
     link(href='/css/main.css' rel='stylesheet')
-    title Payment methods
+    title=title
   body
     include navbar.pug
     div(class='container-fluid')
-      h3 Payment method
+      h3 Payment method UIs
       table(class='table table-condensed fields')
         tr
           th
           th Id
           th Name
           th Created
+          th Fields
         each m in metadata || []
           tr
             td
@@ -36,11 +37,17 @@ html
           div(class='modal-body') 
             div(class='form-group')
               div(class='input-group input-group-sm')
-              textarea(class='form-control module_name', rows="20", placeholder='{}')
+                input(type='hidden', id='defaultCss', value=cssUrl)
+                input(type='text', id='url', class='form-control cssUrl', placeholder='Path to css file')
+                div(class='input-group-btn')
+                  button(type='button', class='btn btn-primary copy', aria-label='Copy', data-clipboard-target='#url' title='Copy URL to clipboard')
+                    span(class='glyphicon glyphicon-copy', aria-hidden='true')
+            label Preview                  
+            iframe
           div(class='modal-footer')
             button(class='btn btn-default done') Done            
 
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')
     script(src='/js/clipboard.min.js')
-    script(src='/js/metadata.js')
+    script(src='/js/metadata-ui.js')

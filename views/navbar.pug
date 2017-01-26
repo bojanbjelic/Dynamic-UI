@@ -1,16 +1,24 @@
 nav(class='navbar navbar-default')
   div(class='container-fluid')
     div(class='navbar-header')
-      a(class='navbar-brand',href='/') GP
+      a(class='navbar-brand',href='/') GPT config
     ul(class='nav navbar-nav')
       li
-        a(href='#', class='dropdown-toggle', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false') Metadata&nbsp;
+        a(href='#', class='dropdown-toggle', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false') Payment methods
           span(class='caret')
           ul(class='dropdown-menu')
             li
-              a(href='/metadata/new') New Metadata
+              a(href='/metadata/new') New payment method
             li
               a(href='/metadata') View List
+      li
+        a(href='#', class='dropdown-toggle', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false') UI
+          span(class='caret')
+          ul(class='dropdown-menu')
+            li
+              a(href='/metadata-ui/new') New UI
+            li
+              a(href='/metadata-ui') View List
       li
         a(href='#', class='dropdown-toggle', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false') Validation&nbsp;
           span(class='caret')

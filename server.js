@@ -5,6 +5,7 @@ var moment = require('moment');
 
 // GPT Modules
 var metadata = require('./metadata.js');
+var metadataUI = require('./metadata-ui.js');
 var validation = require('./validation.js');
 var data = require('./data.js');
 
@@ -22,6 +23,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/metadata', metadata);
+app.use('/metadata-ui', metadataUI);
 app.use('/validation', validation);
 app.use('/data', data);
 

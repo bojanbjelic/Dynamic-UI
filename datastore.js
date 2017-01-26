@@ -5,6 +5,10 @@ var db = {
     filename: __dirname + '/db/metadata.db',
     autoload: true
   }),
+  metadataUI: new datastore({
+    filename: __dirname + '/db/metadata-ui.db',
+    autoload: true
+  }),
 
   validation: new datastore({
     filename: __dirname + '/db/validation.db',

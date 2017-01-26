@@ -3,59 +3,22 @@ html
     link(href='/css/normalize.css' rel='stylesheet')
     link(href='/css/bootstrap.min.css' rel='stylesheet')
     link(href='/css/main.css' rel='stylesheet')
-    title New Metadata 
+    title New Payment Method Configuration
   body
     include navbar.pug
     div(class='container-fluid')
-      h3 New Metadata 
+      h1 New Payment Method Configuration
       div(class='col-md-4')
         div(class='form-group')
           label Name*
           input(class='form-control metadata_name', type='text', placeholder='Name')
-      div(class='col-md-12')
-        label Fields*
-        table(class='table table-condensed fields')
-          tr
-            th Name
-            th Label
-            th Validations
-            th
-          tr
-            td
-              input(type='text', class='form-control field_name', placeholder='Field name')
-            td
-              input(type='text', class='form-control field_label', placeholder='Field label')
-            td
-              a(class='btn edit_validations validations') 
-                span(class='glyphicon glyphicon-edit', aria-hidden='true')
-            td
-              button(class='btn btn-primary add')
-                span(class='glyphicon glyphicon-ok', aria-hidden='true')
-              button(class='btn btn-default clear')
-                span(class='glyphicon glyphicon-remove', aria-hidden='true')      
+        div(class='form-group')
+          label Configuration JSON*
+          textarea(class='form-control config_name', rows="20", placeholder='{}')
       
       div(class='col-md-12')        
-        a(class='btn btn-default', href='/metadata') Back        
+        a(class='btn btn-default', href='/metadata') Cancel        
         button(class='btn btn-primary create') Create
-
-      //- Validation list popup
-      div(class='modal fade validation-list',tabindex='-1',role='dialog')
-        div(class='modal-dialog',role='document')
-          div(class='modal-content')
-            div(class='modal-header')
-              button(type='button', class='close', data-dismiss='modal', aria-label='Close')
-                span(aria-hidden='true') &times;
-              h4(class='modal-title', id='myModalLabel') Select Validations
-            div(class='modal-body') 
-              p Select validations to apply to&nbsp
-                b(class='fieldName')            
-              div(class='list-group')
-                each v in validations
-                  a(class='list-group-item', data-id=v._id, data-name=v.name)=v.name
-                    span(class='glyphicon glyphicon-ok')
-            div(class='modal-footer')
-              button(class='btn btn-primary done') Done
-              button(class='btn btn-default cancel') Cancel              
 
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')
