@@ -3,14 +3,10 @@ var router = express.Router();
 var db = require('./datastore.js');  
 var config = require('./config.js');
 
-/*
- * Get All
- */
 router.get('/', function(req, res){
     db.metadata.find({}, (error, metadata) => {
       if (error)
         return res.status(500).send({error: error});
-      console.log(metadata);
       if (req.accepts('html'))
         res.render('metadata', { metadata: metadata, cssUrl: config.defaultCssUrl });
       else
@@ -18,11 +14,7 @@ router.get('/', function(req, res){
     });
 });
 
-/*
- * Create Form
- */
 router.get('/new', function(req, res){
-
   db.metadata.find({}, (error, validations) => {
     if (error){
       res.status(500).send(error);
@@ -32,11 +24,10 @@ router.get('/new', function(req, res){
   });
 });
 
-/*
- * Insert
- */
 router.post('/', function(req, res){
   var data = req.body;
+  var config = JSON.parse(data.config);
+  data.config = config;
   data.createdAt = new Date();
 
   db.metadata.insert(data, (error, newMetadata) => {
@@ -47,9 +38,6 @@ router.post('/', function(req, res){
   });
 });
 
-/**
- * Delete
- */
 router.delete('/:metadataId', function(req, res){
   db.metadata.remove({_id: req.params.metadataId}, (error, removed)=>{
     if (error)
@@ -59,9 +47,6 @@ router.delete('/:metadataId', function(req, res){
   });
 });
 
-/*
- * Get One
- */
 router.get('/:metadataId', function(req, res){
   db.metadata.findOne({_id: req.params.metadataId}, (metadataError, foundMetadata) => {
     if (metadataError)

@@ -5,7 +5,9 @@ html
   body
     form(method='post' action=postUrl)
       input(type='hidden', value=metadata._id, name='metadata_id')
-      each field in metadata.fields
+      input(type='hidden', value=metadata.name, name='metadata_name')
+      input(type='hidden', value=metadataUi._id, name='metadata_ui_id')
+      each field in metadataUi.fields
         div
           label=field.label
           input(type='text', name=field.name)

@@ -13,59 +13,58 @@ function loadValidationList(callback){
   });
 }
 
-/**
- * Insert
- */
 router.post('/', (req, res) => {
   var data  = req.body;
-  loadValidationList((validations) => {
-    db.metadata.findOne({_id: data.metadata_id}, (metadataError, foundMetadata) => {
-      if (metadataError)
-        return res.status(404).send(metadataError);
+  console.log(data);
+  db.metadata.findOne({_id: data.content.metadata_id}, (error, metadata) => {
+    if (error)
+      return res.status(500).send(error);
+    console.log(metadata);
+    loadValidationList((validations) => {
+      db.metadataUI.findOne({_id: metadata.config['metadata-ui']}, (error, metadataUI) => {
+        if (error)
+          return res.status(404).send(error);
+        var result = { success: true };
+        var error = false;
 
-      var result = { success: true };
-      var error = false;
-      var ok = foundMetadata.fields.every((f) => {
-        return f.validations.every((v) => {
-          var validator = validations[v.name]
-          if (validator.validate(data[f.name]))
+        var ok = metadataUI.fields.every((f) => {
+          if (f.validations === undefined) {
             return true;
+          }
+          return f.validations.every((v) => {
+            var validator = validations[v.name]
+            if (validator.validate(data[f.name]))
+              return true;
 
-          error = {
-            field: { name: f.name },
-            errorMessage: validator.getError()
-          };
+            error = {
+              field: { name: f.name },
+              errorMessage: validator.getError()
+            };
 
-          return false;
+            return false;
+          });
         });
-      });
 
-      if (!ok)
-      {
-        return res.status(400).send({
-          success: false,
-          error: error
+        if (!ok)
+        {
+          return res.status(400).send({
+            success: false,
+            error: error
+          });
+        }
+
+        db.data.insert(req.body, (insertError, newData) => {
+          if (insertError)
+            return res.status(500).send(insertError);
+
+          res.json({ success: true, token: newData._id });
         });
-      }
 
-      db.data.insert(req.body, (insertError, newData) => {
-        if (insertError)
-          return res.status(500).send(insertError);
-
-        res.json({ success: true, token: newData._id });
       });
-
     });
   });
-
-
-
-
 });
 
-/**
- * Get
- */
 router.get('/:token', function(req, res){
   db.data.findOne({ _id: req.params.token}, (error, found) => {
   if (found)
