@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <style>
+            html { font-size: 14px; font-family: Verdana, Geneva, Tahoma, sans-serif; }
+            input[type="text"] { width: 100%; padding: .5em; margin-bottom: 1em; }
+            iframe { width: 100%; min-height: 300px; border: 1px solid #ccc; }
+        </style>
+        <title>-- Integrated --</title>
+    </head>
+    <body>
+        <h2>Select Metadata</h2>
+        <select id="metadata"></select>
+
+        <h3>Metadata Url</h3>
+        <input type="text" name="url-metadata" class="url-metadata" disabled="disabled">
+
+        <h3>Metadata UI Url</h3>
+        <input type="text" name="url-metadata-ui" class="url-metadata-ui" disabled="disabled">
+
+        <h3>Iframe</h3>
+        <iframe src="" style="border:1px solid silver;"></iframe>
+
+        <h3>External Submit</h3>
+        <input type="button" value="Submit">
+
+        <h3>Output</h3>
+        <div id="output"></div>
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+        <script type="text/javascript">
+          var metadataUrl = 'https://courageous-dragonfly.gomix.me/metadata/';
+          var metadataUiUrl = 'https://courageous-dragonfly.gomix.me/metadata-ui/';
+          var metadata;
+          jQuery(function($){
+            $('select').on('change', function() {
+              var selected = $('option:selected', this).val();
+              var uiId;
+              $('input.url-metadata').val(metadataUrl + selected);
+              metadata.forEach(function(m) {
+                if(m._id === selected) {
+                  uiId = m.config["metadata-ui"];
+                }
+              });
+              $('input.url-metadata-ui').val(metadataUiUrl + uiId + "/" + selected);
+              $('iframe').attr('src', metadataUiUrl + uiId + "/" + selected);
+            });
+
+            $('input[type="button"]').on('click', function() {
+              $('iframe').get(0).contentWindow.postMessage('submit', '*');
+            });
+
+            $.ajax({ url:
+              metadataUrl,
+              type: "get",
+              headers: {
+                "Accept": "text/json; charset=utf-8",
+                "Content-Type": "text/json; charset=utf-8"
+              }
+            }).done(function(data) {
+              var select = $('select');
+              $('option', select).remove();
+              metadata = data;
+              //console.log(metadata);
+              metadata.forEach(function(m) {
+                $('<option value="' + m._id + '">' + m.name + '</option>').appendTo(select);
+              });
+              $('select').change();
+            });
+
+
+            // Create IE + others compatible event handler
+            var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+            var eventer = window[eventMethod];
+            var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+            // Listen to message from child window
+            eventer(messageEvent,function(e) {
+              $('#output').text(JSON.stringify(e.data));
+            },false);
+
+          });
+        </script>
+    </body>
+</html>
