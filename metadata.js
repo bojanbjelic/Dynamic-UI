@@ -60,4 +60,40 @@ router.get('/:metadataId', function(req, res){
   });
 });
 
+router.get('/:metadataId/ui', function(req, res){
+  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, metadata) => {
+    if (metadataError)
+      return res.status(404).send(metadataError);
+    if (metadata.config["metadata-ui"] === undefined)
+      return res.status(500).send({ error : "Metadata UI not found, check configuration." });
+    
+    db.metadataUI.findOne({_id: metadata.config["metadata-ui"]}, (metadataError, metadataUi) => {
+      if (metadataError) {
+        return res.status(404).send(metadataError);
+      }
+      renderForm(req, res, metadataUi, metadata);
+
+    });
+  });
+});
+
+var renderForm = function(req, res, metadataUi, metadata) {
+  if (req.accepts('html')) {
+    var captureUrl = config.captureUrl;
+    if (req.query.preview == 'yes')
+      captureUrl = '#';
+    var cssUrl = req.query.cssUrl || config.defaultCssUrl;
+    res.render('form', {
+      metadataUi: metadataUi,
+      metadata: metadata,
+      postUrl: captureUrl,
+      cssUrl: cssUrl
+    });
+  } else {
+    res.send(metadataUi);
+  }
+};
+
+
+
 module.exports = router;

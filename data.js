@@ -2,6 +2,43 @@ var express = require('express');
 var router = express.Router();
 var db  = require('./datastore.js');
 
+router.post('/', (req, res) => {
+  var data  = req.body;
+  //console.log(req);
+  //console.log(data);
+  var body = [];
+  req.on('error', function(err) {
+    res.statusCode = 500;
+    res.write(JSON.stringify({ "description" : "body can't be read." }));
+    res.end();
+    return;
+  }).on('data', function(chunk) {
+    body.push(chunk);
+  }).on('end', function() {
+
+    body = Buffer.concat(body).toString();
+    try {
+      var pt = JSON.parse(body);
+    } catch(exc) {
+      res.statusCode = 500;
+      res.write(JSON.stringify({ "description" : "body doesn't contain properly formatted JSON." }));
+      res.end();
+      return;
+    }
+    console.log(pt);
+  });
+  
+});
+
+router.get('/:token', function(req, res){
+  db.data.findOne({ _id: req.params.token}, (error, found) => {
+  if (found)
+    res.json(found);
+  else
+    res.sendStatus(404);
+  });
+});
+
 function loadValidationList(callback){
   db.validation.find({}, (validationError, list) => {
     var loaded = {};
@@ -13,65 +50,24 @@ function loadValidationList(callback){
   });
 }
 
-router.post('/', (req, res) => {
-  var data  = req.body;
-  console.log(data);
-  db.metadata.findOne({_id: data.content.metadata_id}, (error, metadata) => {
-    if (error)
-      return res.status(500).send(error);
-    console.log(metadata);
-    loadValidationList((validations) => {
-      db.metadataUI.findOne({_id: metadata.config['metadata-ui']}, (error, metadataUI) => {
-        if (error)
-          return res.status(404).send(error);
-        var result = { success: true };
-        var error = false;
+var validate = function(data, metadataUI, validations) {
+  metadataUI.fields.every((f) => {
+    if (f.validations === undefined) {
+      return null;
+    }
+    return f.validations.every((v) => {
+      var validator = validations[v.name]
+      if (validator.validate(data[f.name]))
+        return null;
 
-        var ok = metadataUI.fields.every((f) => {
-          if (f.validations === undefined) {
-            return true;
-          }
-          return f.validations.every((v) => {
-            var validator = validations[v.name]
-            if (validator.validate(data[f.name]))
-              return true;
+      var error = {
+        field: { name: f.name },
+        errorMessage: validator.getError()
+      };
 
-            error = {
-              field: { name: f.name },
-              errorMessage: validator.getError()
-            };
-
-            return false;
-          });
-        });
-
-        if (!ok)
-        {
-          return res.status(400).send({
-            success: false,
-            error: error
-          });
-        }
-
-        db.data.insert(req.body, (insertError, newData) => {
-          if (insertError)
-            return res.status(500).send(insertError);
-
-          res.json({ success: true, token: newData._id });
-        });
-
-      });
+      return error;
     });
   });
-});
-
-router.get('/:token', function(req, res){
-  db.data.findOne({ _id: req.params.token}, (error, found) => {
-  if (found)
-    res.json(found);
-  else
-    res.sendStatus(404);
-  });
-});
+};
 
 module.exports = router;

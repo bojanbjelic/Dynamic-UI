@@ -13,7 +13,8 @@ jQuery(function($){
     $.ajax({
         url: url,
         type: 'post',
-        data: data
+        contentType: 'text/json',
+        data: JSON.stringify(data)
     }).done(function(data) {
         $('input:text').val('');
         (window.parent || window).postMessage(data, "*");
