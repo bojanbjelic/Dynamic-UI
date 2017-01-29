@@ -5,27 +5,41 @@ var db  = require('./datastore.js');
 router.post('/', (req, res) => {
   var data  = req.body;
   //console.log(req);
-  //console.log(data);
-  var body = [];
-  req.on('error', function(err) {
-    res.statusCode = 500;
-    res.write(JSON.stringify({ "description" : "body can't be read." }));
-    res.end();
-    return;
-  }).on('data', function(chunk) {
-    body.push(chunk);
-  }).on('end', function() {
+  console.log(data);
+  
+  db.metadata.findOne({method: data.method}, (error, metadata) => {
+    console.log(metadata);
+    if (error)
+      return res.status(500).send(error);
+    
+    loadValidationList((validations) => {
+      
+      db.metadataUI.findOne({_id: metadata.config.metadata_ui}, (error, metadataUI) => {
+        if (error)
+          return res.status(500).send(error);
+        
+        var error = validate(data, metadataUI, validations); 
+        if (error !== null) {
+          return res.status(400).send({
+            success: false,
+            error: error
+          });
+        }
+        
+        if (data.created === undefined)
+          data.created = new Date();
+        
+        if (data.version === undefined)
+          data.version = 1;
+        
+        db.data.insert(data, (insertError, newData) => {
+          if (insertError)
+            return res.status(500).send(insertError);
 
-    body = Buffer.concat(body).toString();
-    try {
-      var pt = JSON.parse(body);
-    } catch(exc) {
-      res.statusCode = 500;
-      res.write(JSON.stringify({ "description" : "body doesn't contain properly formatted JSON." }));
-      res.end();
-      return;
-    }
-    console.log(pt);
+          res.json({ success: true, token: newData._id });
+        });
+      });
+    });
   });
   
 });
