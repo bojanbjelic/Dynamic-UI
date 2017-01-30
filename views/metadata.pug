@@ -11,18 +11,21 @@ html
       table(class='table table-condensed fields')
         tr
           th
-          th Id
           th Name
+          th Id
           th Created
         each m in metadata || []
           tr
             td
               button(class='btn btn-default preview', type='button', data-id=m._id)
                 span(class='glyphicon glyphicon-search', aria-hidden='true')
+              a(href=("/metadata/" + m._id))
+                button(class='btn btn-default edit', type='button', data-id=m._id)
+                  span(class='glyphicon glyphicon-edit', aria-hidden='true')
               button(class='btn btn-default delete', type='button', data-id=m._id)
                 span(class='glyphicon glyphicon-trash', aria-hidden='true')
+            td=m.config.display_name
             td=m._id
-            td=m.name
             td=moment(m.createdAt).fromNow()
             td=(m.fields || []).map(f=>f.name).join(', ')
 

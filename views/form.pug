@@ -4,8 +4,8 @@ html
     link(href=cssUrl rel='stylesheet')    
   body
     form(method='post' action=postUrl)
-      input(type='hidden', value=metadata.method, name='metadata_method')
-      input(type='hidden', value=metadata._id, name='metadata_id')
+      input(type='hidden', value=metadata ? metadata.method : "", name='metadata_method')
+      input(type='hidden', value=metadata ? metadata._id : "", name='metadata_id')
       input(type='hidden', value=metadataUi._id, name='metadata_ui_id')
       each field in metadataUi.fields
         div

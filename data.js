@@ -4,11 +4,9 @@ var db  = require('./datastore.js');
 
 router.post('/', (req, res) => {
   var data  = req.body;
-  //console.log(req);
   console.log(data);
   
   db.metadata.findOne({method: data.method}, (error, metadata) => {
-    console.log(metadata);
     if (error)
       return res.status(500).send(error);
     
@@ -18,8 +16,11 @@ router.post('/', (req, res) => {
         if (error)
           return res.status(500).send(error);
         
+        // HACK, validate will return NULL
+        // TODO scheme validation
+        // TODO calculate display value
         var error = validate(data, metadataUI, validations); 
-        if (error !== null) {
+        if (error != null) {
           return res.status(400).send({
             success: false,
             error: error
@@ -44,13 +45,15 @@ router.post('/', (req, res) => {
   
 });
 
-router.get('/:token', function(req, res){
+router.get('/:token', function(req, res) {
+  console.log("hit");
   db.data.findOne({ _id: req.params.token}, (error, found) => {
-  if (found)
-    res.json(found);
-  else
-    res.sendStatus(404);
-  });
+    console.log(found);
+    if (found)
+      res.json(found);
+    else
+      res.sendStatus(404);
+    });
 });
 
 function loadValidationList(callback){
@@ -65,6 +68,7 @@ function loadValidationList(callback){
 }
 
 var validate = function(data, metadataUI, validations) {
+  return null;
   metadataUI.fields.every((f) => {
     if (f.validations === undefined) {
       return null;

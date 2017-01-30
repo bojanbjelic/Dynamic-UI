@@ -31,7 +31,7 @@ jQuery(function($){
         });
 
         $.ajax({
-            url: '/metadata',
+            url: '/metadata-ui',
             type: 'post',
             data: {name: name, fields: fields}
         }).done(function(){

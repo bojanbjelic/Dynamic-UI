@@ -36,6 +36,15 @@ router.post('/', function(req, res){
   });
 });
 
+router.get('/:metadataUiId', function(req, res) {
+  db.metadataUI.findOne({_id: req.params.metadataUiId}, (metadataError, metadataUi) => {
+    if (metadataError) {
+      return res.status(404).send(metadataError);
+    }
+    renderForm(req, res, metadataUi);
+  });
+});
+
 router.get('/:metadataUiId/:metadataId', function(req, res) {
   
   db.metadataUI.findOne({_id: req.params.metadataUiId}, (metadataError, metadataUi) => {

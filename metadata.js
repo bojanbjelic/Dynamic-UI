@@ -48,17 +48,45 @@ router.delete('/:metadataId', function(req, res){
 });
 
 router.get('/:metadataId', function(req, res){
-  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, foundMetadata) => {
+  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, metadata) => {
     if (metadataError)
       return res.status(404).send(metadataError);
       
     var captureUrl = config.captureUrl; 
     if (req.query.preview == 'yes')
       captureUrl = '#';
-
-      res.send(foundMetadata);
+    
+    if (req.accepts('html')) {
+       res.render('edit_metadata', {
+          metadata: metadata,
+        });
+    }
+    else {
+      res.send(metadata);
+    }
   });
 });
+
+router.put('/:metadataId', function(req, res){
+  var data = req.body;
+  var config = JSON.parse(data.config);
+  data.config = config;
+  data.updatedAt = new Date();
+  db.metadata.findOne({_id: req.params.metadataId}, (metadataError, metadata) => {
+      if (metadataError)
+        return res.status(404).send(metadataError);
+
+    db.metadata.update({_id: req.params.metadataId}, data, {}, (error) => {
+      if (!error)
+        res.status(200).send();
+      else
+        res.status(500).send({error: error});
+    });
+  });
+});
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 router.get('/:metadataId/ui', function(req, res){
   db.metadata.findOne({_id: req.params.metadataId}, (metadataError, metadata) => {
@@ -93,7 +121,5 @@ var renderForm = function(req, res, metadataUi, metadata) {
     res.send(metadataUi);
   }
 };
-
-
 
 module.exports = router;

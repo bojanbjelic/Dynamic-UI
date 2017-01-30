@@ -1,0 +1,26 @@
+html
+  head
+    link(href='/css/normalize.css' rel='stylesheet')
+    link(href='/css/bootstrap.min.css' rel='stylesheet')
+    link(href='/css/main.css' rel='stylesheet')
+    title Edit Payment Method Configuration
+  body
+    include navbar.pug
+    div(class='container-fluid')
+    form(action='/metadata/' + metadata._id)
+      h1 Edit Payment Method Configuration
+      div(class='col-md-4')
+        div(class='form-group')
+          label Method*
+          input(class='form-control metadata_method', type='text', placeholder='Method identificator', value=metadata.method)
+        div(class='form-group')
+          label Configuration JSON*
+          textarea(class='form-control config', rows="20", placeholder='{}')=JSON.stringify(metadata.config)
+      
+      div(class='col-md-12')        
+        a(class='btn btn-default', href='/metadata') Cancel
+        button(class='btn btn-primary create') Update
+
+    script(src='/js/jquery.min.js')
+    script(src='/js/bootstrap.min.js')
+    script(src='/js/edit-metadata.js')
