@@ -4,7 +4,7 @@ var db  = require('./datastore.js');
 
 router.post('/', (req, res) => {
   var data  = req.body;
-  console.log(data);
+  //console.log(data);
   
   db.metadata.findOne({method: data.method}, (error, metadata) => {
     if (error)
@@ -46,11 +46,9 @@ router.post('/', (req, res) => {
 });
 
 router.get('/:token', function(req, res) {
-  console.log("hit");
-  db.data.findOne({ _id: req.params.token}, (error, found) => {
-    console.log(found);
-    if (found)
-      res.json(found);
+  db.data.findOne({ _id: req.params.token}, (error, data) => {
+    if (data)
+      res.json(data);
     else
       res.sendStatus(404);
     });
