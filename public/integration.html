@@ -4,44 +4,42 @@
             html { font-size: 14px; font-family: Verdana, Geneva, Tahoma, sans-serif; }
             input[type="text"] { width: 100%; padding: .5em; margin-bottom: 1em; }
             iframe { width: 100%; min-height: 300px; border: 1px solid #ccc; }
+            h2 { font-size: 1em; }
         </style>
         <title>-- Integrated --</title>
     </head>
     <body>
-        <h2>Select Metadata</h2>
+        <h2>Select payment method</h2>
         <select id="metadata"></select>
+        <h2>Iframe - integrating GPT Capturing UI</h2>
+        <iframe src="#" style="border:1px solid red;"></iframe>
 
-        <h3>Metadata Url</h3>
-        <input type="text" name="url-metadata" class="url-metadata" disabled="disabled">
-
-        <h3>Metadata UI Url</h3>
-        <input type="text" name="url-metadata-ui" class="url-metadata-ui" disabled="disabled">
-
-        <h3>Iframe</h3>
-        <iframe src="" style="border:1px solid silver;"></iframe>
-
-        <h3>External Submit</h3>
+        <h2>External Submit</h2>
         <input type="button" value="Submit">
 
-        <h3>Output</h3>
-        <div id="output"></div>
+        <h2>Output</h2>
+        <div id="output">Will be populated after GPT Capturing is finished.</div>
+
+
+
+        <h2>Payment method metadata Url</h2>
+        <input type="text" name="url-metadata" class="url-metadata" disabled="disabled">
+
+        <h2>Payment menthod UI Url</h2>
+        <input type="text" name="url-metadata_ui" class="url-metadata_ui" disabled="disabled">
+
+
         <script type="text/javascript" src="/js/jquery.min.js"></script>
         <script type="text/javascript">
           var metadataUrl = 'https://courageous-dragonfly.gomix.me/metadata/';
-          var metadataUiUrl = 'https://courageous-dragonfly.gomix.me/metadata-ui/';
+          //var metadataUiUrl = 'https://courageous-dragonfly.gomix.me/metadata-ui/';
           var metadata;
           jQuery(function($){
             $('select').on('change', function() {
               var selected = $('option:selected', this).val();
-              var uiId;
               $('input.url-metadata').val(metadataUrl + selected);
-              metadata.forEach(function(m) {
-                if(m._id === selected) {
-                  uiId = m.config["metadata-ui"];
-                }
-              });
-              $('input.url-metadata-ui').val(metadataUiUrl + uiId + "/" + selected);
-              $('iframe').attr('src', metadataUiUrl + uiId + "/" + selected);
+              $('input.url-metadata_ui').val(metadataUrl + selected + "/ui");
+              $('iframe').attr('src', metadataUrl + selected + "/ui");
             });
 
             $('input[type="button"]').on('click', function() {
@@ -61,7 +59,7 @@
               metadata = data;
               //console.log(metadata);
               metadata.forEach(function(m) {
-                $('<option value="' + m._id + '">' + m.name + '</option>').appendTo(select);
+                $('<option value="' + m._id + '">' + m.config.display_name + '</option>').appendTo(select);
               });
               $('select').change();
             });
